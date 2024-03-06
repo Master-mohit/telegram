@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+  </head>
+  <body>
+    <div id="main">
+      <div id="top">
+        <div id="left">
+          <div id="upper-left">
+            <h2><i class="ri-menu-line"></i></h2>
+            <input type="search" placeholder="Search">
+          </div>
+          <div id="mainChats">
+            <% logdinUser.friends.forEach(friend=>{ %>
+          <div onclick="frdban('<%= friend.profileImage %>','<%= friend._id %>','<%= friend.username %>')" id="chat-name">
+            <img src="<%= friend.profileImage %>" alt="">
+            <h1><%= friend.username %></h1>
+          </div>
+          <% }) %>
+        </div>
+        </div>
+        <div id="right">
+            <div id="upper-right">
+                <div id="upper-part1">
+                    <img src="" alt="">
+                    <h1 id="usernamePlaceholder">username</h1> 
+                </div>
+                <div id="upper-part2">
+                    <h2><i class="ri-search-line"></i></h2>
+                    <h3><i class="ri-more-2-fill"></i></h3>
+                </div>
+            </div>
+            <div id="conversation">
+               <!-- <div id="bhejnevala">
+               <h2>heyy</h2>
+               </div> -->
+               <!-- <div id="aanevala">
+                <h2>hello</h2>
+               </div> -->
+            </div>
+            <div id="btn">
+                <input type="text" placeholder="Message">
+                <button onclick="btnn()">Send</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var socket = io();
+
+        function btnn(){
+              const btndata =  document.querySelector("#btn input").value
+              const temp = `<div id="bhejnevala">
+               <h2>${btndata}</h2>
+               </div>`;
+               socket.emit("sony", btndata)
+               document.querySelector("#conversation").innerHTML += temp;
+               document.querySelector("#btn input").value = "";
+               console.log(btndata);
+            }
+
+
+            function aanevalamess(nana){
+                const temp = `<div id="aanevala">
+                <h2>${nana}</h2>
+               </div>`;
+               document.querySelector("#conversation").innerHTML += temp;
+
+            }
+            socket.on("max", function(dekh){
+                aanevalamess(dekh)
+                console.log("dekh")
+            })
+
+            document.querySelector("#upper-left input").addEventListener("input", async function(event){
+             const data =  document.querySelector("#upper-left input").value
+             if(data==""){
+              return
+             }
+            const afterSreach =  await axios.post("/searchUser",{
+                 data:data
+            })
+
+            afterSreach.data.forEach(srchU =>{
+              daldoUSer(srchU.username, srchU.profileImage, srchU._id)
+            });
+
+            function daldoUSer(username, profileImage, id){
+const temp = `<div onclick="chatsOpen(event, '${id}', '${profileImage}', '${username}')" id="chat-name" id="${id}">
+
+            <img src="${profileImage}" alt="">
+            <h1>${username}</h1>
+          </div>`;
+          document.querySelector("#left").innerHTML += temp;
+            }
+            })
+
+
+            async function chatsOpen(event, id, profileImage, username) {
+    try {
+        const addFriends = await axios.post("/addfriend", {
+            friendId: id
+        });
+        console.log(addFriends);
+    } catch (error) {
+        console.error('Error adding friend:', error);
+    }
+}
+
+function frdban(id, profileImage, username) {
+    document.querySelector("#right #upper-right").innerHTML = null;
+    const temp = `
+        <div id="upper-part1">
+            <img src="${profileImage}" alt="">
+            <h1>${username}</h1>
+        </div>
+        <div id="upper-part2">
+            <h2><i class="ri-search-line"></i></h2>
+            <h3><i class="ri-more-2-fill"></i></h3>
+        </div>
+    `;
+    document.querySelector("#upper-right").innerHTML += temp; // changed selector here
+    document.querySelector("#usernamePlaceholder").innerHTML = username; // changed selector here
+}
+
+    </script>
+  </body>
+</html>

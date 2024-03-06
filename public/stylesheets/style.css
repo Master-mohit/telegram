@@ -1,0 +1,115 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html, body{
+  width: 100%;
+  height: 100%;
+}
+#main{
+  width: 100%;
+  height: 100%;
+  background-color: red;
+
+}
+#left{
+ width: 30vw;
+ height: 100vh;
+ background-color: aqua;
+ padding: 2vw;
+}
+#upper-left{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* justify-content: space-around; */
+}
+#upper-left input{
+  padding: 0.7vw 3.5vw;
+  border-radius: 20px;
+  outline: none;
+}
+#chat-name{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1vw 0vw;
+}
+#chat-name img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+#right{
+  width: 70vw;
+  height: 100vh;
+  background-color: burlywood;
+}
+#upper-right{
+  width: 100%;
+  height: 10vh;
+  background-color: blue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vw 2vw;
+}
+#upper-part1{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#upper-part1 img{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: red;
+}
+#upper-part2{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+#conversation{
+  width: 100%;
+  height: 82.3vh;
+  background-color: lightseagreen;
+  padding: 1vw 1.3vw;
+}
+#conversation #bhejnevala{
+  width: fit-content;
+  margin-left: auto;
+}
+#conversation #bhejnevala h2{
+ padding: 0.6vw 1.2vw;
+ background-color: rgb(196, 192, 192);
+ border-radius: 4%;
+ margin-bottom: 1vw;
+}
+#conversation #aanevala h2{
+  width: fit-content;
+  padding: 0.6vw 1.2vw;
+  background-color: rgb(196, 192, 192);
+  border-radius: 4%;
+  margin-bottom: 1vw;
+ }
+#btn{
+  width: 100%;
+  max-height: 22vh;
+  background-color: aquamarine;
+}
+#btn input{
+  width: 89%;
+  padding: 1vw 5vw;
+}
+#btn button{
+  padding: 1vw 2vw;
+}
+#top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
