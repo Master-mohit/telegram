@@ -11,6 +11,10 @@ io.on( "connection", function( socket ) {
       console.log("chacha")
 
       socket.broadcast.emit("max", chacha)
+
+      socket.on('newPhoto', function(data){
+            console.log("data")
+      });
     })
 });
 // end of socket.io logic

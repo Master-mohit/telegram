@@ -23,6 +23,7 @@
             <h1><%= friend.username %></h1>
           </div>
           <% }) %>
+          
         </div>
         </div>
         <div id="right">
@@ -45,8 +46,18 @@
                </div> -->
             </div>
             <div id="btn">
+
                 <input type="text" placeholder="Message">
-                <button onclick="btnn()">Send</button>
+                <div id="uploadContainer">
+                 
+              </div>
+                <button onclick="btnn()"><i class="ri-send-plane-2-line"></i></button>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                  <input type="file" name="photo">
+                  <input type="submit" value="Upload">
+                </form>
+                
+                
             </div>
         </div>
       </div>
@@ -66,6 +77,18 @@
                document.querySelector("#btn input").value = "";
                console.log(btndata);
             }
+
+          
+            function btnn(photo) { // Add photo as a parameter
+    const temp = `<div id="bhejnevala">
+      <h2>${photo}</h2>
+    </div>`;
+    socket.emit('newPhoto', { photo: photo }); // Emit the photo to the server
+    document.querySelector("#conversation").innerHTML += temp;
+    document.querySelector("#btn input").value = "";
+    console.log(photo);
+  }
+
 
 
             function aanevalamess(nana){
@@ -128,8 +151,12 @@ function frdban(id, profileImage, username) {
         </div>
     `;
     document.querySelector("#upper-right").innerHTML += temp; // changed selector here
-    document.querySelector("#usernamePlaceholder").innerHTML = username; // changed selector here
+    // document.querySelector("#usernamePlaceholder").innerHTML = username; // changed selector here
 }
+
+
+// After saving the media to database
+socket.emit('newMedia', newMedia); // Send the new media object to all connected clients
 
     </script>
   </body>

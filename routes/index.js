@@ -1,8 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const userModel = require("./users");
+const postModel = require("./post")
 const passport = require("passport");
 const localStrategy = require("passport-local");
+const http = require('http');
+const socketIo = require('socket.io');
+const upload = require("./multer");
+
 
 passport.use(new localStrategy(userModel.authenticate()));
 
@@ -14,6 +19,11 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login');
 });
+
+router.get('/upload', function(req, res, next) {
+  res.render('upload'); // Render the upload.ejs file
+});
+
 
 router.post('/register', function(req, res, next) {
   const userData = new userModel({
@@ -55,7 +65,7 @@ function isLoggedIn(req, res, next){
 
 router.get('/home', async function(req, res ) {
 const logdinUser = await userModel.findOne({username: req.session.passport.user}).populate('friends')
-  res.render('home', {logdinUser});
+  res.render('home', {footer: true, logdinUser});
   console.log(logdinUser);
 });
 
@@ -110,7 +120,33 @@ router.post('/addfriend', async function(req, res, next) {
   }
 });
 
+;
 
+
+router.post('/upload', isLoggedIn, upload.single('photo'), async (req, res) => {
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user});
+
+    if (!Array.isArray(user.posts)) {
+      user.posts = [];
+    }
+
+    const post = await postModel.create({ photo: req.file.filename });
+
+    user.posts.push(post._id);
+
+    await user.save();
+    io.emit('newPhoto', { photo: req.file.filename });
+    res.redirect("/home");
+  } catch (error) {
+    console.error('Error uploading post:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Other routes and middleware...
+
+module.exports = router;
 
 
 
